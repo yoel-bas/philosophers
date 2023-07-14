@@ -11,20 +11,27 @@
 # include <strings.h>
 # include <unistd.h>
 #include <pthread.h>
+#include <sys/time.h>
 
 typedef struct s_list
 {
-    int id[];
-}					t_philo;
+    int time_to_eat;
+    int time_to_die;
+    int time_to_sleep;
+    int time_think;
+    int last_meal;
+    int fork;
+    pthread_mutex_t mutex_rfork;
+    int id;
+    struct s_list *next;
+}					t_data;
 
 typedef struct element
 {
 	char	**args;
     char    *join;
-    t_philo     *philo_id;
-    int i;
-    int ac;
 }			t_push;
+
 
 
 
@@ -40,6 +47,7 @@ void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t nitems, size_t size);
 void	*ft_memset(void *str, int c, int n);
 void        philo(t_push *main_prog);
-t_list	*lst_new(int id);
-void	ft_lstadd_back(t_list **lst, t_list *new);
+t_data	*lst_new(int content);
+void	ft_lstadd_back(t_data **lst, t_data *new);
+unsigned long get_time();
 #endif

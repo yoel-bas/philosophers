@@ -16,6 +16,7 @@ SRC = philo.c \
 	  philo_func.c \
 	  new_list.c 
 
+
 CC = cc
 RM = rm -rf
 
@@ -23,7 +24,7 @@ all: $(NAME)
 
 
 $(NAME): $(SRC) $(HEADER)
-	$(CC) $(CFLAGS) $(SRC) -o $(NAME)
+	$(CC)  $(SRC) -o $(NAME)
 
 clean:
 	$(RM) $(NAME) $(NAMEB)

@@ -1,38 +1,74 @@
 #include "philosophers.h"
-void    ft_init(t_list **philo, t_push *main_prog)
+#include <stdlib.h>
+void*   routine(void *philoo)
 {
-    int i = 1;
-    int n = ft_atoi(main_prog->args[1]);
-    while(i <= n)
+    t_push *main_prog = NULL;
+    unsigned long start = get_time();
+    main_prog = malloc(sizeof(t_push *));
+    t_data *philo = (t_data *)(philoo);
+    philo->last_meal = 0;
+    pthread_mutex_init(&philo->mutex_rfork, NULL);
+    while (1)
     {
-        main_prog->philo_id->id[]
+        if((philo->id % 2) != 0)
+            usleep((philo->time_to_eat / 2) * 1000);
+        pthread_mutex_lock(&philo->mutex_rfork);
+        printf("%lu : philo %d has taken a fork \n",(get_time() - start), philo->id);
+        pthread_mutex_lock(&philo->next->mutex_rfork);
+        printf("%lu : philo %d has taken a fork \n",(get_time() - start),  philo->id);
+        printf("%lu : philo %d eats \n",(get_time() - start), philo->id);
+        philo->last_meal = ((get_time() - start));
+        usleep((philo->time_to_sleep) * 1000);
+        pthread_mutex_unlock(&philo->mutex_rfork);
+        pthread_mutex_unlock(&philo->next->mutex_rfork);
+        printf("%lu : philo %d is sleepin \n",(get_time() - start),  philo->id);
+        usleep((philo->time_to_sleep) * 1000);
+        printf("%lu : philo %d is thinkin \n",(get_time() - start),  philo->id);
+        if(philo->time_to_die < philo->last_meal)
+        {
+        printf("%lu : philo %d dies  \n",(get_time() - start),  philo->id);
+        exit(1);
+        }
+        philo = philo->next;
     }
-}
-void*    routine(void *philo)
-{
-
-    printf("%d\n", philo_id->id);
     return(NULL);
 }
-void        philo(t_push *main_prog)
+void	ft_initilize(t_data **a, t_push *main_prog)
 {
+	int	i;
 
-    // int n = ft_atoi(main_prog->args[1]);
-    // pthread_t t[n];
-    t_list **philo = NULL;
-    puts("CDSCDC");
-    ft_init(philo, main_prog);
-    while((*philo))
+	i = 1;
+	while (i <= ft_atoi(main_prog->args[0]))
+	{
+		if (i == 1)
+			(*a) = lst_new(i);
+		else
+			ft_lstadd_back(a, lst_new(i));
+		i++;
+	}
+
+}
+void    philo(t_push *main_prog)
+{
+    t_data *philo = NULL;
+    philo = malloc(sizeof(t_data));
+    pthread_t t[ft_atoi(main_prog->args[0])];
+    int i = 0;
+    ft_initilize(&philo, main_prog);
+    philo->time_to_die = ft_atoi(main_prog->args[1]);
+    philo->time_to_eat = ft_atoi(main_prog->args[2]);
+    philo->time_to_sleep = ft_atoi(main_prog->args[3]);
+    t_data *last = philo;
+    while((philo)->next)
+        (philo) = (philo)->next;
+    (philo)->next = last;
+    philo = last;
+    i = 1;
+    philo->time_to_die = ft_atoi(main_prog->args[1]);
+    while(i <= ft_atoi(main_prog->args[0]))
     {
-        printf("%d\n", (*philo)->id);
-        (*philo) = (*philo)->next;
+        pthread_create(&t[i], NULL, &routine, philo);
+        pthread_join(t[i], NULL);
+        i++;
     }
-    // while(n)
-    // {
-    //     pthread_create(&t[n], NULL, &routine, *philo);
-    //     pthread_join(t[n], NULL);
-    //     (*philo) = (*philo)->next;
-    //     n--;
-    // } 
-
 }

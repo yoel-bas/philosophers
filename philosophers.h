@@ -22,6 +22,9 @@ typedef struct s_list
     int last_meal;
     int fork;
     pthread_mutex_t mutex_rfork;
+    pthread_mutex_t mutex_death;
+    unsigned long start;
+    pthread_t *t;
     int id;
     struct s_list *next;
 }					t_data;

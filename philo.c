@@ -15,6 +15,8 @@ int main(int ac, char** av)
         }
         parsing(&main_prog, str);
         philo(&main_prog);
+        while (1)
+        {
+        }
     }
 }
-

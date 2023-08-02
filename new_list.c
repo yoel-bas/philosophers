@@ -2,19 +2,20 @@
 
 #include "philosophers.h"
 
-t_data	*lst_new(int content)
+t_philo	*lst_new(int content, t_data *data)
 {
-	t_data	*p;
+	t_philo	*p;
 
-	p = malloc(sizeof(t_data));
+	p = malloc(sizeof(t_philo));
 	p->id = content;
 	p->next = NULL;
+	p->data = data;
 	return (p);
 }
 
-void	ft_lstadd_back(t_data **lst, t_data *new)
+void	ft_lstadd_back(t_philo **lst, t_philo *new)
 {
-	t_data	*last;
+	t_philo	*last;
 
 	last = *lst;
 	if (*lst == NULL)
@@ -27,7 +28,7 @@ void	ft_lstadd_back(t_data **lst, t_data *new)
 	last->next = new;
 }
 
-void	ft_lstadd_front(t_data **lst, t_data *new)
+void	ft_lstadd_front(t_philo **lst, t_philo *new)
 {
 	if (*lst && new)
 	{
@@ -36,7 +37,7 @@ void	ft_lstadd_front(t_data **lst, t_data *new)
 	}
 }
 
-int	lst_size(t_data *lst)
+int	lst_size(t_philo *lst)
 {
 	int	i;
 

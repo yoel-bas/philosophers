@@ -25,3 +25,12 @@ unsigned long get_time()
 		return(0);
 	return((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
+int	ft_print(t_philo *philo, char *str)
+{	
+	
+	if(pthread_mutex_lock(&philo->data->mutex_print) != 0)
+		return(1);
+	printf("%lu :%d %s\n",(get_time() - philo->data->start) ,philo->id , str);
+	pthread_mutex_unlock(&philo->data->mutex_print);
+	return(0);
+}
